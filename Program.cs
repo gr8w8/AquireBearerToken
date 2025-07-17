@@ -34,8 +34,14 @@ Console.WriteLine($"Access Token: {bearerToken.AccessToken}");
 Console.WriteLine($"Expires On: {bearerToken.ExpiresOn}");
 Console.WriteLine($"Press any key to write the access token to {FilePath}");
 Console.ReadLine();
-// Write to a file
-File.WriteAllText(FilePath, bearerToken.AccessToken);
+// Write to a file safely
+using (var writer = new StreamWriter(FilePath, false))
+{
+    writer.WriteLine(bearerToken.AccessToken);
+    writer.WriteLine(writer.NewLine);
+    writer.WriteLine($"Expires On: {bearerToken.ExpiresOn}");
+}
+
 Console.WriteLine($"Access token written to {FilePath}");
 Console.WriteLine("Press any key to exit the application.");
 // Wait for user input before closing the console window
