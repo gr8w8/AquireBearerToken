@@ -31,6 +31,10 @@ var bearerToken = await publicClientApplication.AcquireTokenWithDeviceCode(Scope
 
 // Write the access token to the console
 Console.WriteLine($"Access Token: {bearerToken.AccessToken}");
+
+// Parse the JWT token This is optional but useful for debugging
+Utilities.ParseJWTToken(bearerToken.AccessToken);
+
 Console.WriteLine($"Expires On: {bearerToken.ExpiresOn}");
 Console.WriteLine($"Press any key to write the access token to {FilePath}");
 Console.ReadLine();
@@ -39,7 +43,8 @@ using (var writer = new StreamWriter(FilePath, false))
 {
     writer.WriteLine(bearerToken.AccessToken);
     writer.WriteLine(writer.NewLine);
-    writer.WriteLine($"Expires On: {bearerToken.ExpiresOn}");
+    writer.WriteLine($"Expires On: {bearerToken.ExpiresOn.UtcDateTime}");
+    writer.WriteLine($"Expires On (Local): {bearerToken.ExpiresOn.LocalDateTime}");
 }
 
 Console.WriteLine($"Access token written to {FilePath}");
